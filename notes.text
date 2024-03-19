@@ -1,0 +1,129 @@
+    //  ---How detup the mongoose ----
+    
+        
+    //    --In users file ----
+
+    const mongoose =require ("mongoose");
+
+    mongoose.connect("mongodb://127.0.0.1:27017/firstdb");
+    
+    const userschema = mongoose.Schema({
+       username: String,
+       name: String,
+       age: Number,
+       user : String ,
+    });
+    
+     module.exports = mongoose.model("user" , userschema);
+
+
+
+
+
+
+    //  ----Conect with javascript ----
+
+    //   --in other html file --  
+     
+
+    var express = require('express');
+var router = express.Router();
+const userModel = require ("./users")
+
+router.get("/" , (req , res )=>{
+  res.render("index")
+});
+
+router.get("/creat", async (req , res ) =>{
+  const UserFile = await userModel.create({
+    username: "ajeet",
+    age : 25, 
+    id : 24349093  ,
+
+  });
+  res.send(UserFile);
+});
+
+
+router.get("/new" , async (req , res ) =>{
+  const newFile = await userModel.create({
+    user : "aeejt",
+    age : 34,
+    username : "ajeetkummar ",
+  });
+  res.send(newFile);
+});
+
+     -for all user 
+router.get("/alluser" , async (req , res )=>{
+   let alluser = await userModel.find();
+    res.send(alluser);
+})
+
+  
+
+  --for Oneuser find or read ---
+
+  
+router.get("/delete", async (req, res) => {
+  let deleteUser = await userModel.findOne({ username: "ajeet" });
+  res.send(deleteUser);
+});
+
+
+
+
+-for delete the user --
+
+router.get("/delete", async (req, res) => {
+  let deleteUser = await userModel.findOneAndDelete({ username: "ajeet" });
+  res.send(deleteUser);
+});
+
+
+
+
+
+
+
+
+   ----How setup the session ----
+
+  router.get("/" , (req , res )=>{
+  req.session.ban = true;
+  res.render("index")
+});
+
+router.get("/checkban" , (req , res )=>{
+  // console.log(req.session);
+  if (req.session.ban === true ){ 
+    res.send("check kiya hai sonsle hdekho ")
+   } else {
+    res.send("ghenta ji ");
+   }
+
+});
+
+    -for remove ----
+     
+ router.get("/removeban" , (req , res ) =>{
+    req.session.destroy((errr) =>{
+     
+        if (errr) throw errr ; 
+          res.send("ban removed")
+        
+     
+    })
+  
+ })
+
+
+
+
+
+module.exports = router;
+
+
+
+
+      
