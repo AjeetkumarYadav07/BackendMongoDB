@@ -9,4 +9,4 @@ const userschema = mongoose.Schema({
    user : String ,
 });
 
- module.exports = mongoose.model("user" , userschema);
+ module.exports = mongoose.model("user" , userschema);  
